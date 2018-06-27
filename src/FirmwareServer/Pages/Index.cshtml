@@ -1,0 +1,86 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<page-header title="Dashboard"></page-header>
+
+<div class="row">
+    <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
+        <div class="card w-100">
+            <div class="card-body p-2">
+                <h5 class="card-title">Recent active devices</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tbody>
+                            @foreach (var device in Model.Devices)
+                            {
+                                <tr>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => device.Name)</td>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => device.LastOnline)</td>
+                                    <td class="text-right text-nowrap">
+                                        <a asp-page="./Devices/Details" asp-route-id="@device.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
+        <div class="card w-100">
+            <div class="card-body p-2">
+                <h5 class="card-title">Latest firmware</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tbody>
+                            @foreach (var application in Model.Firmware)
+                            {
+                                <tr>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Name)</td>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Created)</td>
+                                    <td class="text-right text-nowrap">
+                                        <a asp-page="./Firmware/Details" asp-route-id="@application.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="card mt-1">
+    <div class="card-body p-2">
+        <h5 class="card-title">Device log</h5>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Device</th>
+                        <th>Date</th>
+                        <th>Level</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model.DeviceLog)
+                    {
+                        <tr class="">
+                            <td class="text-nowrap">@Html.DisplayFor(x => log.Name)</td>
+                            <td class="text-nowrap">@Html.DisplayFor(x => log.Created)</td>
+                            <td class="text-nowrap">@Html.DisplayFor(x => log.Level)</td>
+                            <td>@Html.DisplayFor(x => log.Message)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>*@

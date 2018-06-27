@@ -1,0 +1,110 @@
+﻿@page "{id:int}"
+@model FirmwareServer.Pages.Devices.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<page-header _title="@ViewData["Title"]">
+    <div class="align-self-end ml-auto">
+        <a class="btn btn-secondary" asp-page="./Index"><i class="far fa-arrow-alt-circle-left"></i> Go back</a>
+    </div>
+</page-header>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+        <fieldset>
+            <legend>Device</legend>
+            <dl>
+                <dt>Name</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Name)</dd>
+
+                <dt>Chip type</dt>
+                <dd>@Html.DisplayFor(x => x.Device.ChipType)</dd>
+
+                <dt>Device type</dt>
+                <dd>@Html.DisplayFor(x => x.Device.DeviceType.Name)</dd>
+
+                <dt>Created</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Created)</dd>
+
+                <dt>Last online</dt>
+                <dd>@Html.DisplayFor(x => x.Device.LastOnline)</dd>
+
+                <dt>MAC address</dt>
+                <dd>@Html.DisplayFor(x => x.Device.StaMac)</dd>
+
+                <dt>Access point MAC address</dt>
+                <dd>@Html.DisplayFor(x => x.Device.ApMac)</dd>
+
+                <dt>SDK version</dt>
+                <dd>@Html.DisplayFor(x => x.Device.SdkVersion)</dd>
+
+                <dt>Firmware version</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Version)</dd>
+
+                <dt>Chip size</dt>
+                <dd>
+                    @if (Model.Device.ChipSize == null)
+                    {
+                        <span>n/a</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Device.ChipSize bytes (@((Model.Device.ChipSize.Value / 1024.0).ToString("F2")) KiB)</span>
+                    }
+                </dd>
+
+                <dt>Free space</dt>
+                <dd>
+                    @if (Model.Device.ChipSize == null)
+                    {
+                        <span>n/a</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Device.FreeSpace bytes (@((Model.Device.FreeSpace.Value / 1024.0).ToString("F2")) KiB)</span>
+                    }
+                </dd>
+            </dl>
+        </fieldset>
+    </div>
+
+    <div class="col-md-6">
+        <fieldset>
+            <legend>Current firmware</legend>
+            <dl>
+                <dt>Name</dt>
+                <dd>@Html.DisplayFor(x => x.Device.CurrentFirmware.Name)</dd>
+
+                <dt>Filename</dt>
+                <dd>@Html.DisplayFor(x => x.Device.CurrentFirmware.Filename)</dd>
+
+                <dt>Created</dt>
+                <dd>@Html.DisplayFor(x => x.Device.CurrentFirmware.Created)</dd>
+
+                <dt>Description</dt>
+                <dd style="white-space: pre">@Html.DisplayFor(x => x.Device.CurrentFirmware.Description)</dd>
+            </dl>
+        </fieldset>
+
+        <fieldset>
+            <legend>Application firmware</legend>
+            <dl>
+                <dt>Name</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Firmware.Name)</dd>
+
+                <dt>Filename</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Firmware.Filename)</dd>
+
+                <dt>Created</dt>
+                <dd>@Html.DisplayFor(x => x.Device.Firmware.Created)</dd>
+
+                <dt>Description</dt>
+                <dd style="white-space: pre">@Html.DisplayFor(x => x.Device.Firmware.Description)</dd>
+            </dl>
+        </fieldset>
+    </div>
+</div>
+

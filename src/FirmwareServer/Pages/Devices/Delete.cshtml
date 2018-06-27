@@ -1,0 +1,70 @@
+﻿@page "{id:int}"
+@model FirmwareServer.Pages.Devices.DeleteModel
+@{
+    ViewData["Title"] = "Delete device";
+}
+
+<page-header _title="">
+    <div class="align-self-end ml-auto">
+        <a asp-page-handler="delete" class="btn btn-danger">Delete</a>
+        <a asp-page="./Index" class="btn btn-secondary ">Cancel</a>
+    </div>
+</page-header>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<h3>Are you sure you want to delete this device?</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl>
+            <dt>Name</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Name)</dd>
+
+            <dt>Device type</dt>
+            <dd>@Html.DisplayFor(x => x.Device.DeviceTypeId)</dd>
+
+            <dt>Created</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Created)</dd>
+
+            <dt>Last online</dt>
+            <dd>@Html.DisplayFor(x => x.Device.LastOnline)</dd>
+
+            <dt>MAC address</dt>
+            <dd>@Html.DisplayFor(x => x.Device.StaMac)</dd>
+
+            <dt>Access point MAC address</dt>
+            <dd>@Html.DisplayFor(x => x.Device.ApMac)</dd>
+
+            <dt>SDK version</dt>
+            <dd>@Html.DisplayFor(x => x.Device.SdkVersion)</dd>
+
+            <dt>Firmware version</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Version)</dd>
+
+            <dt>Chip size</dt>
+            <dd>
+                @if (Model.Device.ChipSize == null)
+                {
+                    <span>n/a</span>
+                }
+                else
+                {
+                    <span>@Model.Device.ChipSize bytes (@((Model.Device.ChipSize.Value / 1024.0).ToString("F2")) KiB)</span>
+                }
+            </dd>
+
+            <dt>Free space</dt>
+            <dd>
+                @if (Model.Device.ChipSize == null)
+                {
+                    <span>n/a</span>
+                }
+                else
+                {
+                    <span>@Model.Device.FreeSpace bytes (@((Model.Device.FreeSpace.Value / 1024.0).ToString("F2")) KiB)</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>

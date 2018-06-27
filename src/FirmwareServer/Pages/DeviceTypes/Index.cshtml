@@ -1,0 +1,51 @@
+﻿@page
+@model FirmwareServer.Pages.DeviceTypes.IndexModel
+@{
+    ViewData["Title"] = "Device types";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<page-header>
+
+</page-header>
+
+<div class="table-responsive">
+    <table class="table table-sm table-align-middle table-hover">
+        <thead class="thead-light">
+            <tr>
+                @*<th>Active</th>*@
+                <th>Chip type</th>
+                <th>Name</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.DeviceTypes)
+            {
+                <tr class="@(item.Active ? "table-success" : "")">
+                    @*<td>
+                        @Html.DisplayFor(x => item.Active)
+                    </td>*@
+                    <td>@item.ChipType</td>
+                    <td>@item.Name</td>
+                    <td class="text-right">
+                        @if (item.Active)
+                        {
+                            <a asp-page-handler="disable" asp-route-id="@item.Id" class="btn btn-danger btn-sm w-100">
+                                Disable
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-page-handler="enable" asp-route-id="@item.Id" class="btn btn-success btn-sm w-100">
+                                Enable
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

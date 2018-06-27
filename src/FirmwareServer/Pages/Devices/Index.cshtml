@@ -1,0 +1,56 @@
+﻿@page
+@model FirmwareServer.Pages.Devices.IndexModel
+@{
+    ViewData["Title"] = "Devices";
+}
+
+<page-header _title="@ViewData["Title"]">
+</page-header>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-align-middle">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-nowrap">Name</th>
+                <th class="text-nowrap">Chip type</th>
+                <th class="text-nowrap">Device type</th>
+                <th class="text-nowrap">Last online</th>
+                <th class="text-nowrap">Firmware status</th>
+                <th class="text-nowrap">&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var device in Model.Devices)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => device.Name)</td>
+                    <td>@Html.DisplayFor(x => device.ChipType)</td>
+                    <td>@Html.DisplayFor(x => device.DeviceType)</td>
+                    <td>@Html.DisplayFor(x => device.LastOnline)</td>
+                    <td>
+                        @if (device.FirmwareId == null)
+                        {
+                            <span class="text-warning">Unknown</span>
+                        }
+                        else if (device.CurrentFirmwareId == device.FirmwareId)
+                        {
+                            <span class="text-success">Up to date</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Outdated</span>
+                        }
+                    </td>
+                    <td class="text-right text-nowrap">
+                        <a asp-page="./Details" asp-route-id="@device.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                        <a asp-page="./Edit" asp-route-id="@device.Id" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a asp-page="./Delete" asp-route-id="@device.Id" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

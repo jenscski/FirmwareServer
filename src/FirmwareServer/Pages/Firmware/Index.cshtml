@@ -1,0 +1,51 @@
+﻿@page
+@model FirmwareServer.Pages.Firmware.IndexModel
+@{
+    ViewData["Title"] = "Firmware";
+}
+
+<page-header _title="@ViewData["Title"]">
+    <div class="align-self-end ml-auto">
+        <a class="btn btn-success" asp-page="./Upload"><i class="fas fa-plus"></i> Upload firmware</a>
+    </div>
+</page-header>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-align-middle">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-nowrap">&nbsp;</th>
+                <th class="text-nowrap">Name</th>
+                <th class="text-nowrap">Device type</th>
+                <th class="text-nowrap">Uploaded</th>
+                <th class="text-nowrap">Filename</th>
+                <th class="text-nowrap">&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var firmware in Model.Firmware)
+            {
+                <tr>
+                    <td class="text-left">
+                        @if (firmware.IsActive)
+                        {
+                            <span class="badge badge-pill badge-success"><i class="fas fa-check"></i></span>
+                        }
+                    </td>
+                    <td>@firmware.Name</td>
+                    <td>@firmware.DeviceType</td>
+                    <td class="text-nowrap">@Html.DisplayFor(m => firmware.Created)</td>
+                    <td>@firmware.Filename</td>
+                    <td class="text-right text-nowrap">
+                        <a asp-page="./Details" asp-route-id="@firmware.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                        <a asp-page="./Edit" asp-route-id="@firmware.Id" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a asp-page="./Delete" asp-route-id="@firmware.Id" class="btn btn-danger btn-sm @(firmware.IsActive ? "disabled" : "")"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

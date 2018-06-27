@@ -1,0 +1,15 @@
+﻿@page "{code}"
+@model FirmwareServer.Pages.StatusCodeModel
+@{
+    ViewData["Title"] = "Error " + Model.Code;
+}
+
+<page-header class="text-danger">
+
+</page-header>
+
+<div class="jumbotron">
+    <h1>Error @Model.Code</h1>
+
+    <h3>@Model.Message</h3>
+</div>
