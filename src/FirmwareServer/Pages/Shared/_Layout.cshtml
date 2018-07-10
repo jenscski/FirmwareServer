@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Options.IOptions<FirmwareServerConfiguration> configuration
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,12 +21,12 @@
     <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container">
             <a class="navbar-brand" asp-page="/Index"><i class="fas fa-microchip"></i> Firmware server</a>
-            @if (User.Identity.IsAuthenticated)
+
+            @if (!configuration.Value.IsPasswordProtected || User.Identity.IsAuthenticated)
             {
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topnavbar" aria-controls="topnavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="topnavbar">
                     <ul class="navbar-nav">
                         @*<li class="nav-item"><a class="nav-link" asp-page="/Index">Dashboard</a></li>*@
@@ -38,17 +39,20 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" asp-page="/DeviceTypes/Index">Device types</a>
                                 @*<a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>*@
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>*@
                             </div>
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a asp-page="/Account/Logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logg ut</a>
-                        </li>
-                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a asp-page="/Account/Logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logg ut</a>
+                            </li>
+                        </ul>
+                    }
                 </div>
             }
         </div>
