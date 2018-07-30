@@ -29,7 +29,7 @@
                     <td>@Html.DisplayFor(x => device.Name)</td>
                     <td>@Html.DisplayFor(x => device.ChipType)</td>
                     <td>@Html.DisplayFor(x => device.DeviceType)</td>
-                    <td>@Html.DisplayFor(x => device.LastOnline)</td>
+                    <td>@Html.DisplayFor(x => device.LastOnline, "DateTimeOffsetHumanized")</td>
                     <td>
                         @if (device.FirmwareId == null)
                         {
