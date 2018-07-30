@@ -18,7 +18,7 @@
                             {
                                 <tr>
                                     <td class="text-nowrap">@Html.DisplayFor(x => device.Name)</td>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => device.LastOnline)</td>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => device.LastOnline, "DateTimeOffsetHumanized")</td>
                                     <td class="text-right text-nowrap">
                                         <a asp-page="./Devices/Details" asp-route-id="@device.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
                                     </td>
@@ -42,7 +42,7 @@
                             {
                                 <tr>
                                     <td class="text-nowrap">@Html.DisplayFor(x => application.Name)</td>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Created)</td>
+                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Created, "DateTimeOffsetHumanized")</td>
                                     <td class="text-right text-nowrap">
                                         <a asp-page="./Firmware/Details" asp-route-id="@application.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
                                     </td>
