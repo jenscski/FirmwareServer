@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using FirmwareServer.Breadcrumb;
+﻿using FirmwareServer.Breadcrumb;
 using FirmwareServer.EntityLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace FirmwareServer.Pages.Devices
 {
@@ -35,6 +34,7 @@ namespace FirmwareServer.Pages.Devices
         public IEnumerable<SelectListItem> Firmware => _db.Firmware
             .Where(x => _db.Devices.Where(d => d.Id == Id && d.DeviceTypeId == x.DeviceTypeId).Any())
             .OrderBy(x => x.Name.ToLower())
+            .ThenByDescending(x => x.Created)
             .Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
