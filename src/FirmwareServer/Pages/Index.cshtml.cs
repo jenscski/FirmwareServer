@@ -1,7 +1,7 @@
 ﻿using FirmwareServer.EntityLayer;
-using FirmwareServer.EntityLayer.Models;
+using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,17 +18,11 @@ namespace FirmwareServer.Pages
             _db = db;
         }
 
-        public List<Device> Devices { get; private set; }
         public List<EntityLayer.Models.Firmware> Firmware { get; private set; }
         public List<DeviceLogModel> DeviceLog { get; private set; }
 
         public void OnGet()
         {
-            Devices = _db.Devices
-                .OrderByDescending(x => x.LastOnline)
-                .Take(10)
-                .ToList();
-
             Firmware = _db.Firmware
                 .OrderByDescending(x => x.Created)
                 .Take(10)
@@ -46,6 +40,23 @@ namespace FirmwareServer.Pages
                 .OrderByDescending(x => x.Created)
                 .Take(100)
                 .ToList();
+        }
+
+        public IActionResult OnGetDevices()
+        {
+            var devices = _db.Devices
+                .OrderByDescending(x => x.LastOnline)
+                .Take(10)
+                .AsEnumerable()
+                .Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Name,
+                    online = x.LastOnline.Humanize(),
+                    details = Url.Page("./Devices/Details", new { id = x.Id }),
+                });
+
+            return new JsonResult(devices);
         }
         public class DeviceLogModel
         {

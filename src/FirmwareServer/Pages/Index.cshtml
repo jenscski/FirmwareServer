@@ -13,17 +13,14 @@
                 <h5 class="card-title">Recent active devices</h5>
                 <div class="table-responsive">
                     <table class="table table-sm">
-                        <tbody>
-                            @foreach (var device in Model.Devices)
-                            {
-                                <tr>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => device.Name)</td>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => device.LastOnline, "DateTimeOffsetHumanized")</td>
-                                    <td class="text-right text-nowrap">
-                                        <a asp-page="./Devices/Details" asp-route-id="@device.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
-                                    </td>
-                                </tr>
-                            }
+                        <tbody data-bind="foreach: devices">
+                            <tr>
+                                <td class="text-nowrap" data-bind="text: name"></td>
+                                <td class="text-nowrap" data-bind="text: online"></td>
+                                <td class="text-right text-nowrap">
+                                    <a data-bind="attr: {href: details}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -57,30 +54,59 @@
 </div>
 
 @*<div class="card mt-1">
-    <div class="card-body p-2">
-        <h5 class="card-title">Device log</h5>
-        <div class="table-responsive">
-            <table class="table table-sm">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Device</th>
-                        <th>Date</th>
-                        <th>Level</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var log in Model.DeviceLog)
-                    {
-                        <tr class="">
-                            <td class="text-nowrap">@Html.DisplayFor(x => log.Name)</td>
-                            <td class="text-nowrap">@Html.DisplayFor(x => log.Created)</td>
-                            <td class="text-nowrap">@Html.DisplayFor(x => log.Level)</td>
-                            <td>@Html.DisplayFor(x => log.Message)</td>
+        <div class="card-body p-2">
+            <h5 class="card-title">Device log</h5>
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Device</th>
+                            <th>Date</th>
+                            <th>Level</th>
+                            <th>Message</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var log in Model.DeviceLog)
+                        {
+                            <tr class="">
+                                <td class="text-nowrap">@Html.DisplayFor(x => log.Name)</td>
+                                <td class="text-nowrap">@Html.DisplayFor(x => log.Created)</td>
+                                <td class="text-nowrap">@Html.DisplayFor(x => log.Level)</td>
+                                <td>@Html.DisplayFor(x => log.Message)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
+
+@section Scripts{
+    <script>
+        var Device = function (id, name, online) {
+            this.id = id;
+            this.name = name;
+            this.online = online;
+        };
+
+        var ViewModel = function () {
+            var self = this;
+
+            self.devices = ko.observableArray();
+
+            self.update = function () {
+                $.get('@(Url.Page(null, "devices"))', function (data) {
+                    self.devices(data);
+                });
+            };
+        };
+
+        var vm = new ViewModel();
+        vm.update();
+
+        setInterval(vm.update, 10000);
+
+        ko.applyBindings(vm);
+    </script>
+}
