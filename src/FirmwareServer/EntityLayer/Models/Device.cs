@@ -35,6 +35,8 @@ namespace FirmwareServer.EntityLayer.Models
 
         public int? ChipSize { get; set; }
 
+        public string RemoteIpAddress { get; set; }
+
         public ChipType ChipType { get; set; }
 
         [ForeignKey("DeviceTypeId")]

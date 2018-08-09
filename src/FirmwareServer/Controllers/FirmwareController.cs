@@ -38,9 +38,6 @@ namespace FirmwareServer.Controllers
                 {
                     case ChipType.ESP8266:
                         return HandleESP8266FirmwareRequest();
-
-                    default:
-                        return base.BadRequest();
                 }
             }
 
@@ -79,6 +76,7 @@ namespace FirmwareServer.Controllers
                 _logger.LogWarning("Created new device. ID={0}, MAC address={1}", device.Id, device.StaMac);
             }
 
+            device.RemoteIpAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
             device.CurrentFirmwareId = _db.Firmware.Where(x => x.MD5 == sketchmd5).FirstOrDefault()?.Id;
             device.LastOnline = DateTimeOffset.Now;
             device.SdkVersion = sdkversion;
