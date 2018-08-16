@@ -1,7 +1,7 @@
 ﻿@page
-@model FirmwareServer.Pages.Firmware.UploadModel
+@model FirmwareServer.Pages.Applications.CreateModel
 @{
-    ViewData["Title"] = "Upload";
+    ViewData["Title"] = "Create";
 }
 
 <form method="post" enctype="multipart/form-data">
@@ -33,15 +33,6 @@
             </div>
 
             <div class="form-group">
-                <label>@Html.DisplayNameFor(x => x.Input.FirmwareFile)</label>
-                <div class="custom-file">
-                    <input asp-for="Input.FirmwareFile" type="file" class="custom-file-input" />
-                    <label class="custom-file-label" asp-for="Input.FirmwareFile"></label>
-                </div>
-                <span asp-validation-for="Input.FirmwareFile" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
                 <label asp-for="Input.Description"></label>
                 <textarea asp-for="Input.Description" rows="10" class="form-control"></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>
@@ -55,18 +46,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script type="text/javascript">
-        $(function () {
-            $('#@Html.IdFor(x => x.Input.FirmwareFile)').change(function () {
-                console.log("hei");
-                $('label[for="@Html.IdFor(x => x.Input.FirmwareFile)"]').text($('#@Html.IdFor(x => x.Input.FirmwareFile)')[0].files[0].name);
-
-                if ($('#@Html.IdFor(x => x.Input.Name)').val().length === 0) {
-                    $('#@Html.IdFor(x => x.Input.Name)').val($('#@Html.IdFor(x => x.Input.FirmwareFile)')[0].files[0].name);
-                }
-            });
-        });
-    </script>
 }
 

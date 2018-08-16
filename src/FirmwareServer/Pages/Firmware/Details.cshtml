@@ -1,12 +1,12 @@
 ﻿@page "{id:int}"
 @model FirmwareServer.Pages.Firmware.DetailsModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Firmware details";
 }
 
 <page-header _title="@ViewData["Title"]">
     <div class="align-self-end ml-auto">
-        <a class="btn btn-secondary" asp-page="./Index"><i class="far fa-arrow-alt-circle-left"></i> Go back</a>
+        <a class="btn btn-secondary" asp-page="/Applications/Details" asp-route-id="@Model.Firmware.ApplicationId"><i class="far fa-arrow-alt-circle-left"></i> Go back</a>
     </div>
 </page-header>
 
@@ -15,9 +15,6 @@
 <div class="row">
     <div class="col-md-6">
         <dl>
-            @*<dt>Active</dt>
-                <dd><partial name="DisplayTemplates/Boolean" model="Model.Firmware.Id == Model.Application.FirmwareId" /></dd>*@
-
             <dt>@Html.DisplayNameFor(x => x.Firmware.Name)</dt>
             <dd>@Html.DisplayFor(x => x.Firmware.Name)</dd>
 
@@ -32,32 +29,13 @@
 
             <dt>Size</dt>
             <dd>@Model.Firmware.Data.Length bytes (@((Model.Firmware.Data.Length / 1024.0).ToString("F2")) KiB)</dd>
-
-            <dt>@Html.DisplayNameFor(x => x.Firmware.Description)</dt>
-            <dd style="white-space: pre">@Html.DisplayFor(x => x.Firmware.Description)</dd>
         </dl>
     </div>
 
     <div class="col-md-6">
-        <fieldset>
-            <legend>Devices</legend>
-            <table class="table table-sm ">
-                <thead>
-                    <tr class="thead-light">
-                        <th>Name</th>
-                        <th>Last online</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var device in Model.Devices)
-                    {
-                        <tr>
-                            <td>@device.Name</td>
-                            <td>@Html.DisplayFor(x => device.LastOnline)</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </fieldset>
+        <dl>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.Description)</dt>
+            <dd style="white-space: pre">@Html.DisplayFor(x => x.Firmware.Description)</dd>
+        </dl>
     </div>
 </div>

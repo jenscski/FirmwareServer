@@ -13,6 +13,8 @@ namespace FirmwareServer.EntityLayer.Models
 
         public int? DeviceTypeId { get; set; }
 
+        public int? ApplicationId { get; set; }
+
         public DateTimeOffset Created { get; set; } = DateTimeOffset.Now;
 
         public DateTimeOffset LastOnline { get; set; }
@@ -27,8 +29,6 @@ namespace FirmwareServer.EntityLayer.Models
 
         public string Version { get; set; }
 
-        public int? FirmwareId { get; set; }
-
         public int? CurrentFirmwareId { get; set; }
 
         public int? FreeSpace { get; set; }
@@ -42,8 +42,8 @@ namespace FirmwareServer.EntityLayer.Models
         [ForeignKey("DeviceTypeId")]
         public virtual DeviceType DeviceType { get; set; }
 
-        [ForeignKey("FirmwareId")]
-        public virtual Firmware Firmware { get; set; }
+        [ForeignKey("ApplicationId")]
+        public virtual Application Application { get; set; }
 
         [ForeignKey("CurrentFirmwareId")]
         public virtual Firmware CurrentFirmware { get; set; }

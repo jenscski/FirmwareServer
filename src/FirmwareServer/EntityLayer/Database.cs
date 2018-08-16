@@ -18,6 +18,8 @@ namespace FirmwareServer.EntityLayer
 
         public DbSet<DeviceType> DeviceTypes { get; set; }
 
+        public DbSet<Application> Applications { get; set; }
+
         // Remember to update DatabaseServices.Backup()
     }
 

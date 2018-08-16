@@ -20,25 +20,21 @@ namespace FirmwareServer.Pages.Devices
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
 
-        public IEnumerable<SelectListItem> DeviceTypes => _db.DeviceTypes
+        public IEnumerable<object> DeviceTypesWithApplications => _db.DeviceTypes
             .Where(x => _db.Devices.Where(d => d.Id == Id && d.ChipType == x.ChipType).Any())
             .Where(x => x.Active || x.Id == Input.DeviceTypeId)
             .OrderBy(x => x.Name.ToLower())
-            .Select(x => new SelectListItem
+            .Select(x => new
             {
-                Value = x.Id.ToString(),
-                Text = x.Name,
-            })
-            .ToList();
-
-        public IEnumerable<SelectListItem> Firmware => _db.Firmware
-            .Where(x => _db.Devices.Where(d => d.Id == Id && d.DeviceTypeId == x.DeviceTypeId).Any())
-            .OrderBy(x => x.Name.ToLower())
-            .ThenByDescending(x => x.Created)
-            .Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name,
+                id = x.Id,
+                name = x.Name,
+                applications = _db.Applications
+                    .Where(a => a.DeviceTypeId == x.Id)
+                    .Select(a => new
+                    {
+                        id = a.Id,
+                        name = a.Name
+                    }),
             })
             .ToList();
 
@@ -54,8 +50,8 @@ namespace FirmwareServer.Pages.Devices
             [Display(Name = "Device type")]
             public int? DeviceTypeId { get; set; }
 
-            [Display(Name = "Firmware")]
-            public int? FirmwareId { get; set; }
+            [Display(Name = "Application")]
+            public int? ApplicationId { get; set; }
 
             [Display(Name = "Chip type")]
             public ChipType ChipType { get; internal set; }
@@ -77,9 +73,9 @@ namespace FirmwareServer.Pages.Devices
             Input = new InputModel
             {
                 Name = device.Name,
-                DeviceTypeId = device.DeviceTypeId,
-                FirmwareId = device.FirmwareId,
                 ChipType = device.ChipType,
+                DeviceTypeId = device.DeviceTypeId,
+                ApplicationId = device.ApplicationId,
             };
         }
 
@@ -93,9 +89,9 @@ namespace FirmwareServer.Pages.Devices
 
             if (ModelState.IsValid)
             {
-                device.DeviceTypeId = Input.DeviceTypeId;
                 device.Name = Input.Name;
-                device.FirmwareId = Input.FirmwareId;
+                device.DeviceTypeId = Input.DeviceTypeId;
+                device.ApplicationId = Input.ApplicationId;
 
                 _db.SaveChanges();
 

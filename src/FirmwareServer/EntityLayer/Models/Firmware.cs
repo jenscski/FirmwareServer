@@ -13,7 +13,7 @@ namespace FirmwareServer.EntityLayer.Models
 
         public DateTimeOffset Created { get; set; } = DateTimeOffset.Now;
 
-        public int DeviceTypeId { get; set; }
+        public int ApplicationId { get; set; }
 
         public string Name { get; set; }
 
@@ -24,5 +24,8 @@ namespace FirmwareServer.EntityLayer.Models
         public byte[] Data { get; set; }
 
         public string MD5 { get; set; }
+
+        [ForeignKey("ApplicationId")]
+        public virtual Application Application { get; set; }
     }
 }

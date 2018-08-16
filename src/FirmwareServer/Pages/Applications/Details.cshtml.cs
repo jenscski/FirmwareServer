@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace FirmwareServer.Pages.Devices
+namespace FirmwareServer.Pages.Applications
 {
-    public class DetailsModel : PageModel, Breadcrumb.IBreadcrumbPage
+    public class DetailsModel : PageModel, IBreadcrumbPage
     {
         private readonly Database _db;
 
@@ -21,7 +21,11 @@ namespace FirmwareServer.Pages.Devices
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
 
-        public Device Device { get; private set; }
+        public Application Application { get; private set; }
+
+        public IEnumerable<EntityLayer.Models.Firmware> Firmware => _db.Firmware
+            .Where(x => x.ApplicationId == Id)
+            .OrderByDescending(x => x.Created);
 
         public DetailsModel(Database db)
         {
@@ -30,21 +34,19 @@ namespace FirmwareServer.Pages.Devices
 
         public void OnGet()
         {
-            Device = _db.Devices
+            Application = _db.Applications
                 .Include(x => x.DeviceType)
-                .Include(x => x.CurrentFirmware)
-                .Include(x => x.Application)
-                .Include(x => x.Application.Firmware)
+                .Include(x => x.Firmware)
                 .First(x => x.Id == Id);
-            if (Device == null)
+            if (Application == null)
             {
-                throw new ApplicationException($"Unable to load device with ID '{Id}'.");
+                throw new ApplicationException($"Unable to load application with ID '{Id}'.");
             }
         }
 
-        IEnumerable<Breadcrumb.Breadcrumb> IBreadcrumbPage.Breadcrumbs()
+        public IEnumerable<Breadcrumb.Breadcrumb> Breadcrumbs()
         {
-            return new[] { new Breadcrumb.Breadcrumb { Title = "Devices", Url = Url.Page("./Index") }, };
+            return new[] { new Breadcrumb.Breadcrumb { Title = "Applications", Url = Url.Page("./Index") } };
         }
     }
 }

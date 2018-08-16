@@ -6,52 +6,86 @@
 
 <page-header title="Dashboard"></page-header>
 
-<div class="row">
-    <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
-        <div class="card w-100">
-            <div class="card-body p-2">
-                <h5 class="card-title">Recent active devices</h5>
-                <div class="table-responsive">
-                    <table class="table table-sm">
-                        <tbody data-bind="foreach: devices">
-                            <tr>
-                                <td class="text-nowrap" data-bind="text: name"></td>
-                                <td class="text-nowrap" data-bind="text: online"></td>
-                                <td class="text-right text-nowrap">
-                                    <a data-bind="attr: {href: details}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<div class="card mb-2">
+    <div class="card-header text-center p-1">
+        Recent active devices
     </div>
-
-    <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
-        <div class="card w-100">
-            <div class="card-body p-2">
-                <h5 class="card-title">Latest firmware</h5>
-                <div class="table-responsive">
-                    <table class="table table-sm">
-                        <tbody>
-                            @foreach (var application in Model.Firmware)
-                            {
-                                <tr>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Name)</td>
-                                    <td class="text-nowrap">@Html.DisplayFor(x => application.Created, "DateTimeOffsetHumanized")</td>
-                                    <td class="text-right text-nowrap">
-                                        <a asp-page="./Firmware/Details" asp-route-id="@application.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm m-0 table-borderless">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">Name</th>
+                        <th class="text-nowrap">Chip type</th>
+                        <th class="text-nowrap">Device type</th>
+                        <th class="text-nowrap">Application</th>
+                        <th class="text-nowrap">Last online</th>
+                        <th class="text-nowrap">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: devices">
+                    <tr class="border-top">
+                        <td class="text-nowrap" data-bind="text: name"></td>
+                        <td class="text-nowrap" data-bind="text: chipType"></td>
+                        <td class="text-nowrap" data-bind="text: deviceType"></td>
+                        <td class="text-nowrap" data-bind="text: application"></td>
+                        <td class="text-nowrap" data-bind="text: online"></td>
+                        <td class="text-right text-nowrap">
+                            <a data-bind="attr: {href: details}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+@*<div class="row">
+        <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
+            <div class="card w-100">
+                <div class="card-body p-2">
+                    <h5 class="card-title">Recent active devices</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody data-bind="foreach: devices">
+                                <tr>
+                                    <td class="text-nowrap" data-bind="text: name"></td>
+                                    <td class="text-nowrap" data-bind="text: online"></td>
+                                    <td class="text-right text-nowrap">
+                                        <a data-bind="attr: {href: details}" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 d-flex align-self-stretch mt-1">
+            <div class="card w-100">
+                <div class="card-body p-2">
+                    <h5 class="card-title">Latest firmware</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <tbody>
+                                @foreach (var application in Model.Firmware)
+                                {
+                                    <tr>
+                                        <td class="text-nowrap">@Html.DisplayFor(x => application.Name)</td>
+                                        <td class="text-nowrap">@Html.DisplayFor(x => application.Created, "DateTimeOffsetHumanized")</td>
+                                        <td class="text-right text-nowrap">
+                                            <a asp-page="./Firmware/Details" asp-route-id="@application.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 
 @*<div class="card mt-1">
         <div class="card-body p-2">

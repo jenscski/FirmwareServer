@@ -7,7 +7,7 @@
 <page-header _title="">
     <div class="align-self-end ml-auto">
         <a asp-page-handler="delete" class="btn btn-danger">Delete</a>
-        <a asp-page="./Index" class="btn btn-secondary ">Cancel</a>
+        <a asp-page="/Applications/Details" asp-route-id="@Model.Firmware.ApplicationId" class="btn btn-secondary">Cancel</a>
     </div>
 </page-header>
 
@@ -18,16 +18,26 @@
 <div class="row">
     <div class="col-md-6">
         <dl>
-            <dt>Name</dt>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.Name)</dt>
             <dd>@Html.DisplayFor(x => x.Firmware.Name)</dd>
 
-            <dt>Filename</dt>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.Filename)</dt>
             <dd>@Html.DisplayFor(x => x.Firmware.Filename)</dd>
 
-            <dt>Created</dt>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.Created)</dt>
             <dd>@Html.DisplayFor(x => x.Firmware.Created)</dd>
 
-            <dt>Description</dt>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.MD5)</dt>
+            <dd>@Html.DisplayFor(x => x.Firmware.MD5)</dd>
+
+            <dt>Size</dt>
+            <dd>@Model.Firmware.Data.Length bytes (@((Model.Firmware.Data.Length / 1024.0).ToString("F2")) KiB)</dd>
+        </dl>
+    </div>
+
+    <div class="col-md-6">
+        <dl>
+            <dt>@Html.DisplayNameFor(x => x.Firmware.Description)</dt>
             <dd style="white-space: pre">@Html.DisplayFor(x => x.Firmware.Description)</dd>
         </dl>
     </div>

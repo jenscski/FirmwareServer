@@ -77,7 +77,7 @@ namespace FirmwareServer.Controllers
             }
 
             device.RemoteIpAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            device.CurrentFirmwareId = _db.Firmware.Where(x => x.MD5 == sketchmd5).FirstOrDefault()?.Id;
+            device.CurrentFirmwareId = _db.Firmware.Where(x => x.MD5 == sketchmd5).FirstOrDefault()?.Id; // TODO
             device.LastOnline = DateTimeOffset.Now;
             device.SdkVersion = sdkversion;
             device.Version = version;
@@ -86,11 +86,15 @@ namespace FirmwareServer.Controllers
 
             _db.SaveChanges();
 
-            var firmware = _db.Firmware.Find(device.FirmwareId);
-            if (firmware != null && !string.Equals(firmware.MD5, sketchmd5, StringComparison.OrdinalIgnoreCase))
+            var application = _db.Applications.Find(device.ApplicationId);
+            if (application != null)
             {
-                _logger.LogWarning("New firmware. ID={0}, Device ID={1}", firmware.Id, device.Id);
-                return File(firmware.Data, "application/octet-stream");
+                var firmware = _db.Firmware.Find(application.FirmwareId);
+                if (firmware != null && !string.Equals(firmware.MD5, sketchmd5, StringComparison.OrdinalIgnoreCase))
+                {
+                    _logger.LogWarning("New firmware. ID={0}, Device ID={1}", firmware.Id, device.Id);
+                    return File(firmware.Data, "application/octet-stream");
+                }
             }
 
             return StatusCode(304);

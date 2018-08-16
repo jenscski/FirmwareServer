@@ -1,0 +1,76 @@
+﻿@page "{id:int}"
+@model FirmwareServer.Pages.Applications.UploadModel
+@{
+    ViewData["Title"] = "Upload firmware";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <page-header>
+        <div class="align-self-end ml-auto">
+            <button type="submit" class="btn btn-success mr-0">Save</button>
+            <a asp-page="./Details" class="btn btn-secondary ">Cancel</a>
+        </div>
+    </page-header>
+
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Application</label>
+                <input asp-for="Application.Name" class="form-control" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input asp-for="Input.MakeActive" class="form-check-input" type="checkbox">
+                    <label asp-for="Input.MakeActive" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(x => x.Input.FirmwareFile)</label>
+                <div class="custom-file">
+                    <input asp-for="Input.FirmwareFile" type="file" class="custom-file-input" />
+                    <label class="custom-file-label" asp-for="Input.FirmwareFile"></label>
+                </div>
+                <span asp-validation-for="Input.FirmwareFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Description"></label>
+                <textarea asp-for="Input.Description" rows="10" class="form-control"></textarea>
+                <span asp-validation-for="Input.Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript">
+        $(function () {
+            $('#@Html.IdFor(x => x.Input.FirmwareFile)').change(function () {
+                console.log("hei");
+                $('label[for="@Html.IdFor(x => x.Input.FirmwareFile)"]').text($('#@Html.IdFor(x => x.Input.FirmwareFile)')[0].files[0].name);
+
+                if ($('#@Html.IdFor(x => x.Input.Name)').val().length === 0) {
+                    $('#@Html.IdFor(x => x.Input.Name)').val($('#@Html.IdFor(x => x.Input.FirmwareFile)')[0].files[0].name);
+                }
+            });
+        });
+    </script>
+}
+

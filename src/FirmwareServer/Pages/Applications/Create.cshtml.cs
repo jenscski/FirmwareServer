@@ -1,16 +1,17 @@
-﻿using FirmwareServer.EntityLayer;
-using FirmwareServer.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
+using FirmwareServer.Breadcrumb;
+using FirmwareServer.EntityLayer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace FirmwareServer.Pages.Firmware
+namespace FirmwareServer.Pages.Applications
 {
-    public class UploadModel : PageModel, Breadcrumb.IBreadcrumbPage
+    public class CreateModel : PageModel, IBreadcrumbPage
     {
         private Database _db;
 
@@ -47,15 +48,11 @@ namespace FirmwareServer.Pages.Firmware
             [Display(Name = "Device type")]
             public int? DeviceTypeId { get; set; }
 
-            [Required]
-            [Display(Name = "Firmware")]
-            public IFormFile FirmwareFile { get; set; }
-
             [Display(Name = "Description")]
             public string Description { get; set; }
         }
 
-        public UploadModel(Database db)
+        public CreateModel(Database db)
         {
             _db = db;
         }
@@ -68,29 +65,18 @@ namespace FirmwareServer.Pages.Firmware
         {
             if (ModelState.IsValid)
             {
-                var firmware = new EntityLayer.Models.Firmware
+                var application = new EntityLayer.Models.Application
                 {
-                    Filename = Input.FirmwareFile.FileName,
                     Name = Input.Name,
                     DeviceTypeId = Input.DeviceTypeId.Value,
                     Description = Input.Description,
                 };
 
-                using (var mem = new System.IO.MemoryStream())
-                {
-                    Input.FirmwareFile.CopyTo(mem);
-                    firmware.Data = mem.ToArray();
-                }
-
-                firmware.MD5 = firmware.Data.ComputeMD5Hash();
-
-                //TODO prevent duplicate firmware upload
-
-                _db.Firmware.Add(firmware);
+                _db.Applications.Add(application);
                 _db.SaveChanges();
 
-                StatusMessage = "New firmware has been uploaded";
-                return RedirectToPage("./Index");
+                StatusMessage = "New application has been created";
+                return RedirectToPage("./Details", new { id = application.Id });
             }
 
             return Page();
@@ -98,7 +84,7 @@ namespace FirmwareServer.Pages.Firmware
 
         public IEnumerable<Breadcrumb.Breadcrumb> Breadcrumbs()
         {
-            return new[] { new Breadcrumb.Breadcrumb { Title = "Firmware", Url = Url.Page("./Index") } };
+            return new[] { new Breadcrumb.Breadcrumb { Title = "Applications", Url = Url.Page("./Index") } };
         }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using FirmwareServer.EntityLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FirmwareServer.EntityLayer.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20180811124340_Application")]
+    partial class Application
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,15 +29,11 @@ namespace FirmwareServer.EntityLayer.Migrations
 
                     b.Property<int>("DeviceTypeId");
 
-                    b.Property<int?>("FirmwareId");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceTypeId");
-
-                    b.HasIndex("FirmwareId");
 
                     b.ToTable("Application");
                 });
@@ -47,8 +45,6 @@ namespace FirmwareServer.EntityLayer.Migrations
 
                     b.Property<string>("ApMac");
 
-                    b.Property<int?>("ApplicationId");
-
                     b.Property<int?>("ChipSize");
 
                     b.Property<int>("ChipType");
@@ -58,6 +54,8 @@ namespace FirmwareServer.EntityLayer.Migrations
                     b.Property<int?>("CurrentFirmwareId");
 
                     b.Property<int?>("DeviceTypeId");
+
+                    b.Property<int?>("FirmwareId");
 
                     b.Property<int?>("FreeSpace");
 
@@ -75,11 +73,11 @@ namespace FirmwareServer.EntityLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId");
-
                     b.HasIndex("CurrentFirmwareId");
 
                     b.HasIndex("DeviceTypeId");
+
+                    b.HasIndex("FirmwareId");
 
                     b.ToTable("Device");
                 });
@@ -98,8 +96,6 @@ namespace FirmwareServer.EntityLayer.Migrations
                     b.Property<string>("Message");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeviceId");
 
                     b.ToTable("DeviceLog");
                 });
@@ -124,13 +120,13 @@ namespace FirmwareServer.EntityLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ApplicationId");
-
                     b.Property<DateTimeOffset>("Created");
 
                     b.Property<byte[]>("Data");
 
                     b.Property<string>("Description");
+
+                    b.Property<int>("DeviceTypeId");
 
                     b.Property<string>("Filename");
 
@@ -139,8 +135,6 @@ namespace FirmwareServer.EntityLayer.Migrations
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
 
                     b.ToTable("Firmware");
                 });
@@ -151,18 +145,10 @@ namespace FirmwareServer.EntityLayer.Migrations
                         .WithMany()
                         .HasForeignKey("DeviceTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FirmwareServer.EntityLayer.Models.Firmware", "Firmware")
-                        .WithMany()
-                        .HasForeignKey("FirmwareId");
                 });
 
             modelBuilder.Entity("FirmwareServer.EntityLayer.Models.Device", b =>
                 {
-                    b.HasOne("FirmwareServer.EntityLayer.Models.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId");
-
                     b.HasOne("FirmwareServer.EntityLayer.Models.Firmware", "CurrentFirmware")
                         .WithMany()
                         .HasForeignKey("CurrentFirmwareId");
@@ -170,21 +156,10 @@ namespace FirmwareServer.EntityLayer.Migrations
                     b.HasOne("FirmwareServer.EntityLayer.Models.DeviceType", "DeviceType")
                         .WithMany()
                         .HasForeignKey("DeviceTypeId");
-                });
 
-            modelBuilder.Entity("FirmwareServer.EntityLayer.Models.DeviceLog", b =>
-                {
-                    b.HasOne("FirmwareServer.EntityLayer.Models.Device", "Device")
+                    b.HasOne("FirmwareServer.EntityLayer.Models.Firmware", "Firmware")
                         .WithMany()
-                        .HasForeignKey("DeviceId");
-                });
-
-            modelBuilder.Entity("FirmwareServer.EntityLayer.Models.Firmware", b =>
-                {
-                    b.HasOne("FirmwareServer.EntityLayer.Models.Application", "Application")
-                        .WithMany()
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FirmwareId");
                 });
 #pragma warning restore 612, 618
         }

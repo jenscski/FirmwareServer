@@ -1,14 +1,14 @@
-﻿@page "{id}"
-@model FirmwareServer.Pages.Firmware.EditModel
+﻿@page "{id:int}"
+@model FirmwareServer.Pages.Applications.EditModel
 @{
-    ViewData["Title"] = "Edit firmware";
+    ViewData["Title"] = "Edit";
 }
 
 <form method="post">
     <page-header>
         <div class="align-self-end ml-auto">
             <button type="submit" class="btn btn-success mr-0">Save</button>
-            <a asp-page="/Applications/Details" asp-route-id="@Model.Application.Id" class="btn btn-secondary">Cancel</a>
+            <a asp-page="./Index" class="btn btn-secondary ">Cancel</a>
         </div>
     </page-header>
 
@@ -19,19 +19,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label>Application</label>
-                <input asp-for="Application.Name" class="form-control" readonly />
-            </div>
-
-            <div class="form-group">
                 <label asp-for="Input.Name"></label>
                 <input asp-for="Input.Name" class="form-control" />
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Input.Filename"></label>
-                <input asp-for="Input.Filename" class="form-control" readonly />
+                <label asp-for="Input.DeviceTypeId"></label>
+                <select asp-for="Input.DeviceTypeId" asp-items="Model.DeviceTypes" class="form-control">
+                    <option value="">Choose …</option>
+                </select>
+                <span asp-validation-for="Input.DeviceTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.FirmwareId"></label>
+                <select asp-for="Input.FirmwareId" asp-items="Model.Firmware" class="form-control">
+                    <option value="">Choose …</option>
+                </select>
+                <span asp-validation-for="Input.FirmwareId" class="text-danger"></span>
             </div>
         </div>
 

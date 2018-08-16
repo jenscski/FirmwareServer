@@ -1,0 +1,50 @@
+﻿@page
+@model FirmwareServer.Pages.Applications.IndexModel
+@{
+    ViewData["Title"] = "Applications";
+}
+
+<page-header _title="@ViewData["Title"]">
+    <div class="align-self-end ml-auto">
+        <a class="btn btn-success" asp-page="./Create"><i class="fas fa-plus"></i> Create</a>
+    </div>
+</page-header>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-align-middle">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-nowrap">&nbsp;</th>
+                <th class="text-nowrap">Name</th>
+                <th class="text-nowrap">Device type</th>
+                <th class="text-nowrap">Active firmware</th>
+                <th class="text-nowrap">&nbsp;</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var application in Model.Applications)
+            {
+                <tr>
+                    <td class="text-left">
+                        @if (application.IsActive)
+                        {
+                            <span class="badge badge-pill badge-success"><i class="fas fa-check"></i></span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(x => application.Name)</td>
+                    <td>@Html.DisplayFor(x => application.DeviceType)</td>
+                    <td>@Html.DisplayFor(x => application.Firmware)</td>
+                    <td class="text-right text-nowrap">
+                        <a asp-page="./Upload" asp-route-id="@application.Id" class="btn btn-secondary btn-sm"><i class="fas fa-upload"></i></a>
+                        <a asp-page="./Details" asp-route-id="@application.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                        <a asp-page="./Edit" asp-route-id="@application.Id" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a asp-page="./Delete" asp-route-id="@application.Id" class="btn btn-danger btn-sm @(application.IsActive ? "disabled" : "")"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -14,64 +14,61 @@
 
 <div class="row">
     <div class="col-md-6">
-        <fieldset>
-            <legend>Device</legend>
-            <dl>
-                <dt>Name</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Name)</dd>
+        <dl>
+            <dt>Name</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Name)</dd>
 
-                <dt>Chip type</dt>
-                <dd>@Html.DisplayFor(x => x.Device.ChipType)</dd>
+            <dt>Chip type</dt>
+            <dd>@Html.DisplayFor(x => x.Device.ChipType)</dd>
 
-                <dt>Device type</dt>
-                <dd>@Html.DisplayFor(x => x.Device.DeviceType.Name)</dd>
+            <dt>Device type</dt>
+            <dd>@Html.DisplayFor(x => x.Device.DeviceType.Name)</dd>
 
-                <dt>Created</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Created)</dd>
+            <dt>Created</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Created)</dd>
 
-                <dt>Last online</dt>
-                <dd>@Html.DisplayFor(x => x.Device.LastOnline)</dd>
+            <dt>Last online</dt>
+            <dd>@Html.DisplayFor(x => x.Device.LastOnline)</dd>
 
-                <dt>MAC address</dt>
-                <dd>@Html.DisplayFor(x => x.Device.StaMac)</dd>
+            <dt>MAC address</dt>
+            <dd>@Html.DisplayFor(x => x.Device.StaMac)</dd>
 
-                <dt>Access point MAC address</dt>
-                <dd>@Html.DisplayFor(x => x.Device.ApMac)</dd>
+            <dt>Access point MAC address</dt>
+            <dd>@Html.DisplayFor(x => x.Device.ApMac)</dd>
 
-                <dt>SDK version</dt>
-                <dd>@Html.DisplayFor(x => x.Device.SdkVersion)</dd>
+            <dt>SDK version</dt>
+            <dd>@Html.DisplayFor(x => x.Device.SdkVersion)</dd>
 
-                <dt>Remote IP address</dt>
-                <dd>@Html.DisplayFor(x => x.Device.RemoteIpAddress)</dd>
+            <dt>Remote IP address</dt>
+            <dd>@Html.DisplayFor(x => x.Device.RemoteIpAddress)</dd>
 
-                <dt>Firmware version</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Version)</dd>
+            <dt>Firmware version</dt>
+            <dd>@Html.DisplayFor(x => x.Device.Version)</dd>
 
-                <dt>Chip size</dt>
-                <dd>
-                    @if (Model.Device.ChipSize == null)
-                    {
-                        <span>n/a</span>
-                    }
-                    else
-                    {
-                        <span>@Model.Device.ChipSize bytes (@((Model.Device.ChipSize.Value / 1024.0).ToString("F2")) KiB)</span>
-                    }
-                </dd>
+            <dt>Chip size</dt>
+            <dd>
+                @if (Model.Device.ChipSize == null)
+                {
+                    <span>n/a</span>
+                }
+                else
+                {
+                    <span>@Model.Device.ChipSize bytes (@((Model.Device.ChipSize.Value / 1024.0).ToString("F2")) KiB)</span>
+                }
+            </dd>
 
-                <dt>Free space</dt>
-                <dd>
-                    @if (Model.Device.ChipSize == null)
-                    {
-                        <span>n/a</span>
-                    }
-                    else
-                    {
-                        <span>@Model.Device.FreeSpace bytes (@((Model.Device.FreeSpace.Value / 1024.0).ToString("F2")) KiB)</span>
-                    }
-                </dd>
-            </dl>
-        </fieldset>
+            <dt>Free space</dt>
+            <dd>
+                @if (Model.Device.ChipSize == null)
+                {
+                    <span>n/a</span>
+                }
+                else
+                {
+                    <span>@Model.Device.FreeSpace bytes (@((Model.Device.FreeSpace.Value / 1024.0).ToString("F2")) KiB)</span>
+                }
+            </dd>
+        </dl>
     </div>
 
     <div class="col-md-6">
@@ -96,16 +93,16 @@
             <legend>Application firmware</legend>
             <dl>
                 <dt>Name</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Firmware.Name)</dd>
+                <dd>@Html.DisplayFor(x => x.Device.Application.Firmware.Name)</dd>
 
                 <dt>Filename</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Firmware.Filename)</dd>
+                <dd>@Html.DisplayFor(x => x.Device.Application.Firmware.Filename)</dd>
 
                 <dt>Created</dt>
-                <dd>@Html.DisplayFor(x => x.Device.Firmware.Created)</dd>
+                <dd>@Html.DisplayFor(x => x.Device.Application.Firmware.Created)</dd>
 
                 <dt>Description</dt>
-                <dd style="white-space: pre">@Html.DisplayFor(x => x.Device.Firmware.Description)</dd>
+                <dd style="white-space: pre">@Html.DisplayFor(x => x.Device.Application.Firmware.Description)</dd>
             </dl>
         </fieldset>
     </div>

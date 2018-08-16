@@ -1,10 +1,8 @@
 ﻿using FirmwareServer.EntityLayer;
-using FirmwareServer.EntityLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FirmwareServer.Pages.Firmware
 {
@@ -17,8 +15,7 @@ namespace FirmwareServer.Pages.Firmware
         public string StatusMessage { get; set; }
 
         public EntityLayer.Models.Firmware Firmware { get; private set; }
-
-        public List<Device> Devices { get; private set; }
+        public EntityLayer.Models.Application Application { get; private set; }
 
         public void OnGet([FromServices] Database db)
         {
@@ -28,12 +25,32 @@ namespace FirmwareServer.Pages.Firmware
                 throw new ApplicationException($"Unable to load firmware with ID '{Id}'.");
             }
 
-            Devices = db.Devices.Where(x => x.CurrentFirmwareId == Id).OrderBy(x => x.Name.ToLower()).ToList();
+            Application = db.Applications.Find(Firmware.ApplicationId);
+            if (Application == null)
+            {
+                throw new ApplicationException($"Unable to load application with ID '{Firmware.ApplicationId}'.");
+            }
         }
+
+        public IActionResult OnGetDownload([FromServices] Database db)
+        {
+            Firmware = db.Firmware.Find(Id);
+            if (Firmware == null)
+            {
+                throw new ApplicationException($"Unable to load firmware with ID '{Id}'.");
+            }
+
+            return File(Firmware.Data, "application/octet-stream", Firmware.Filename);
+        }
+
+
 
         public IEnumerable<Breadcrumb.Breadcrumb> Breadcrumbs()
         {
-            return new[] { new Breadcrumb.Breadcrumb { Title = "Firmware", Url = Url.Page("./Index") } };
+            return new[] {
+                new Breadcrumb.Breadcrumb { Title = "Applications", Url = Url.Page("/Applications/Index") },
+                new Breadcrumb.Breadcrumb { Title = Application.Name, Url = Url.Page("/Applications/Details", new{ id=Application.Id }) }
+            };
         }
     }
 }

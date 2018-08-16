@@ -37,6 +37,7 @@ namespace FirmwareServer.EntityLayer
                 _db.BackupTo<Models.DeviceLog>(backup);
                 _db.BackupTo<Models.Firmware>(backup);
                 _db.BackupTo<Models.DeviceType>(backup);
+                _db.BackupTo<Models.Application>(backup);
             }
 
             _logger.LogWarning($"Backup took {sw.Elapsed.TotalSeconds} seconds");

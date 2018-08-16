@@ -1,6 +1,5 @@
 ﻿using FirmwareServer.Breadcrumb;
 using FirmwareServer.EntityLayer;
-using FirmwareServer.EntityLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -9,7 +8,7 @@ using System.Linq;
 
 namespace FirmwareServer.Pages.Firmware
 {
-    public class DeleteModel : PageModel, Breadcrumb.IBreadcrumbPage
+    public class DeleteModel : PageModel, IBreadcrumbPage
     {
         private readonly Database _db;
 
@@ -20,6 +19,7 @@ namespace FirmwareServer.Pages.Firmware
         public int Id { get; set; }
 
         public EntityLayer.Models.Firmware Firmware { get; private set; }
+        public EntityLayer.Models.Application Application { get; private set; }
 
         public DeleteModel(Database db)
         {
@@ -34,10 +34,16 @@ namespace FirmwareServer.Pages.Firmware
                 throw new ApplicationException($"Unable to load firmware with ID '{Id}'.");
             }
 
+            Application = _db.Applications.Find(Firmware.ApplicationId);
+            if (Application == null)
+            {
+                throw new ApplicationException($"Unable to load application with ID '{Firmware.ApplicationId}'.");
+            }
+
             if (_db.Devices.Any(x => x.CurrentFirmwareId == Id))
             {
                 StatusMessage = "Firmware is active, and cannot be deleted";
-                return RedirectToPage("./Index");
+                return RedirectToPage("/Applications/Details", new { id = Firmware.ApplicationId });
             }
 
             return Page();
@@ -51,6 +57,12 @@ namespace FirmwareServer.Pages.Firmware
                 throw new ApplicationException($"Unable to load firmware with ID '{Id}'.");
             }
 
+            Application = _db.Applications.Find(Firmware.ApplicationId);
+            if (Application == null)
+            {
+                throw new ApplicationException($"Unable to load application with ID '{Firmware.ApplicationId}'.");
+            }
+
             if (_db.Devices.Any(x => x.CurrentFirmwareId == Id))
             {
                 throw new ApplicationException("Unable to delete active firmware");
@@ -60,12 +72,15 @@ namespace FirmwareServer.Pages.Firmware
             _db.SaveChanges();
 
             StatusMessage = "Firmware has been deleted";
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Applications/Details", new { id = Firmware.ApplicationId });
         }
 
         public IEnumerable<Breadcrumb.Breadcrumb> Breadcrumbs()
         {
-            return new[] { new Breadcrumb.Breadcrumb { Title = "Firmware", Url = Url.Page("./Index") } };
+            return new[] {
+                new Breadcrumb.Breadcrumb { Title = "Applications", Url = Url.Page("/Applications/Index") },
+                new Breadcrumb.Breadcrumb { Title = Application.Name, Url = Url.Page("/Applications/Details", new{ id=Application.Id }) }
+            };
         }
     }
 }

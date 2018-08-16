@@ -25,11 +25,27 @@ namespace FirmwareServer
             {
                 var services = scope.ServiceProvider;
 
-                var db = services.GetService<EntityLayer.Database>();
+                var db = services.GetService<Database>();
+
+                var pendingMigrations = db.Database.GetPendingMigrations();
 
                 db.Database.Migrate();
 
                 SeedDeviceTypes(db);
+
+                if (pendingMigrations.Contains("20180811125425_Firmware.ApplicationId"))
+                {
+                    var firmware = db.Firmware.Where(x => x.ApplicationId == 0).ToList();
+                    if (firmware.Count() > 0)
+                    {
+                        var app = new Application { DeviceTypeId = 1, Name = "Migration app" };
+                        db.Applications.Add(app);
+                        db.SaveChanges();
+
+                        firmware.ForEach(x => x.ApplicationId = app.Id);
+                        db.SaveChanges();
+                    }
+                }
             }
 
             host.Run();

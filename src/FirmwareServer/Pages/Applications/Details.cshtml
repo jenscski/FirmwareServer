@@ -1,16 +1,19 @@
-﻿@page
-@model FirmwareServer.Pages.Firmware.IndexModel
+﻿@page "{id:int}"
+@model FirmwareServer.Pages.Applications.DetailsModel
 @{
-    ViewData["Title"] = "Firmware";
+    ViewData["Title"] = "Details";
 }
 
 <page-header _title="@ViewData["Title"]">
     <div class="align-self-end ml-auto">
-        <a class="btn btn-success" asp-page="./Upload"><i class="fas fa-plus"></i> Upload firmware</a>
+        <a class="btn btn-secondary" asp-page="./Index"><i class="far fa-arrow-alt-circle-left"></i> Go back</a>
+        <a class="btn btn-primary" asp-page="./Upload" asp-route-id="@Model.Application.Id"><i class="fas fa-upload"></i> Upload firmware</a>
     </div>
 </page-header>
 
 <partial name="_StatusMessage" for="StatusMessage" />
+
+<partial name="_Details" for="Application" />
 
 <div class="table-responsive">
     <table class="table table-sm table-hover table-align-middle">
@@ -18,7 +21,6 @@
             <tr>
                 <th class="text-nowrap">&nbsp;</th>
                 <th class="text-nowrap">Name</th>
-                <th class="text-nowrap">Device type</th>
                 <th class="text-nowrap">Uploaded</th>
                 <th class="text-nowrap">Filename</th>
                 <th class="text-nowrap">&nbsp;</th>
@@ -30,19 +32,19 @@
             {
                 <tr>
                     <td class="text-left">
-                        @if (firmware.IsActive)
+                        @if (firmware.Id == Model.Application.FirmwareId)
                         {
                             <span class="badge badge-pill badge-success"><i class="fas fa-check"></i></span>
                         }
                     </td>
                     <td>@firmware.Name</td>
-                    <td>@firmware.DeviceType</td>
                     <td class="text-nowrap">@Html.DisplayFor(m => firmware.Created)</td>
                     <td>@firmware.Filename</td>
                     <td class="text-right text-nowrap">
-                        <a asp-page="./Details" asp-route-id="@firmware.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
-                        <a asp-page="./Edit" asp-route-id="@firmware.Id" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
-                        <a asp-page="./Delete" asp-route-id="@firmware.Id" class="btn btn-danger btn-sm @(firmware.IsActive ? "disabled" : "")"><i class="fas fa-trash-alt"></i></a>
+                        <a asp-page="/Firmware/Details" asp-page-handler="download" asp-route-id="@firmware.Id" class="btn btn-secondary btn-sm"><i class="fas fa-download"></i></a>
+                        <a asp-page="/Firmware/Details" asp-route-id="@firmware.Id" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i></a>
+                        <a asp-page="/Firmware/Edit" asp-route-id="@firmware.Id" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                        <a asp-page="/Firmware/Delete" asp-route-id="@firmware.Id" class="btn btn-danger btn-sm @(firmware.Id == Model.Application.FirmwareId ? "disabled" : "")"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             }

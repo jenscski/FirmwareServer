@@ -31,18 +31,24 @@
 
             <div class="form-group">
                 <label asp-for="Input.DeviceTypeId"></label>
-                <select asp-for="Input.DeviceTypeId" asp-items="Model.DeviceTypes" class="form-control">
-                    <option value="">Choose …</option>
+                <select asp-for="Input.DeviceTypeId" class="form-control" data-bind="options: availableDeviceTypes,
+                        optionsText: 'name',
+                        optionsValue: 'id',
+                        value: selectedDeviceType,
+                        optionsCaption: 'Choose …'">
                 </select>
                 <span asp-validation-for="Input.DeviceTypeId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Input.FirmwareId"></label>
-                <select asp-for="Input.FirmwareId" asp-items="Model.Firmware" class="form-control">
-                    <option value="">Choose …</option>
+                <label asp-for="Input.ApplicationId"></label>
+                <select asp-for="Input.ApplicationId" class="form-control" data-bind="options: availableApplications,
+                        optionsText: 'name',
+                        optionsValue: 'id',
+                        value: selectedApplication,
+                        optionsCaption: 'Choose …'">
                 </select>
-                <span asp-validation-for="Input.FirmwareId" class="text-danger"></span>
+                <span asp-validation-for="Input.ApplicationId" class="text-danger"></span>
             </div>
         </div>
     </div>
@@ -50,4 +56,29 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        var DeviceViewModel = function () {
+            var self = this;
+
+            self.availableDeviceTypes = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DeviceTypesWithApplications));
+
+            self.availableApplications = ko.pureComputed(function () {
+                var selected = ko.utils.arrayFirst(self.availableDeviceTypes, function (item) {
+                    return item.id == self.selectedDeviceType();
+                });
+
+                if (selected === null)
+                    return [];
+
+                return selected.applications;
+            });
+
+            self.selectedDeviceType = ko.observable(@Model.Input.DeviceTypeId);
+
+            self.selectedApplication = ko.observable(@Model.Input.ApplicationId);
+        };
+
+        var vm = new DeviceViewModel();
+        ko.applyBindings(vm);
+    </script>
 }

@@ -19,5 +19,8 @@ namespace FirmwareServer.EntityLayer.Models
         public LogLevel Level { get; set; } = LogLevel.Information;
 
         public string Message { get; set; }
+
+        [ForeignKey("DeviceId")]
+        public virtual Device Device { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model FirmwareServer.EntityLayer.Models.Application
+
+<div class="row">
+    <div class="col-md-6">
+        <dl>
+            <dt>Name</dt>
+            <dd>@Html.DisplayFor(x => x.Name)</dd>
+
+            <dt>Device type</dt>
+            <dd>@Html.DisplayFor(x => x.DeviceType.Name)</dd>
+
+            <dt>Created</dt>
+            <dd>@Html.DisplayFor(x => x.Created)</dd
+
+        </dl>
+    </div>
+
+    <div class="col-md-6">
+        <dl>
+            <dt>Description</dt>
+            <dd style="white-space: pre">@Html.DisplayFor(x => x.Description)</dd>
+        </dl>
+    </div>
+</div>
+

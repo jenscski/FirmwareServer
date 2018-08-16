@@ -1,7 +1,9 @@
 ﻿using FirmwareServer.EntityLayer;
+using FirmwareServer.EntityLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,25 +18,9 @@ namespace FirmwareServer.Pages.Firmware
         [TempData]
         public string StatusMessage { get; set; }
 
-        public IEnumerable<SelectListItem> DeviceTypes => _db.DeviceTypes
-            .Where(x => x.Active || x.Id == Input.DeviceTypeId)
-            .OrderBy(x => x.ChipType)
-            .AsEnumerable()
-            .GroupBy(x => x.ChipType)
-            .Select(x => new
-            {
-                Group = new SelectListGroup { Name = x.Key.ToString() },
-                Items = x.OrderBy(y => y.Name),
-            })
-            .SelectMany(x => x.Items, (g, i) => new SelectListItem
-            {
-                Group = g.Group,
-                Value = i.Id.ToString(),
-                Text = i.Name
-            });
-
         [BindProperty]
         public InputModel Input { get; set; }
+        public Application Application { get; private set; }
 
         public EditModel(Database db)
         {
@@ -46,10 +32,6 @@ namespace FirmwareServer.Pages.Firmware
             [Required]
             [Display(Name = "Name")]
             public string Name { get; set; }
-
-            [Required]
-            [Display(Name = "Device type")]
-            public int? DeviceTypeId { get; set; }
 
             [Display(Name = "Filename")]
             public string Filename { get; set; }
@@ -66,12 +48,17 @@ namespace FirmwareServer.Pages.Firmware
                 throw new ApplicationException($"Unable to load firmware with ID '{id}'.");
             }
 
+            Application = _db.Applications.Find(row.ApplicationId);
+            if (Application == null)
+            {
+                throw new ApplicationException($"Unable to load application with ID '{row.ApplicationId}'.");
+            }
+
             Input = new InputModel
             {
                 Name = row.Name,
                 Filename = row.Filename,
                 Description = row.Description,
-                DeviceTypeId = row.DeviceTypeId,
             };
         }
 
@@ -83,16 +70,21 @@ namespace FirmwareServer.Pages.Firmware
                 throw new ApplicationException($"Unable to load firmware with ID '{id}'.");
             }
 
+            Application = _db.Applications.Find(row.ApplicationId);
+            if (Application == null)
+            {
+                throw new ApplicationException($"Unable to load application with ID '{row.ApplicationId}'.");
+            }
+
             if (ModelState.IsValid)
             {
                 row.Name = Input.Name;
-                row.DeviceTypeId = Input.DeviceTypeId.Value;
                 row.Description = Input.Description;
 
                 _db.SaveChanges();
 
                 StatusMessage = "Firmware has been updated";
-                return RedirectToPage("./Index");
+                return RedirectToPage("/Applications/Details", new { id = row.ApplicationId });
             }
 
             return Page();
@@ -100,7 +92,10 @@ namespace FirmwareServer.Pages.Firmware
 
         public IEnumerable<Breadcrumb.Breadcrumb> Breadcrumbs()
         {
-            return new[] { new Breadcrumb.Breadcrumb { Title = "Firmware", Url = Url.Page("./Index") } };
+            return new[] {
+                new Breadcrumb.Breadcrumb { Title = "Applications", Url = Url.Page("/Applications/Index") },
+                new Breadcrumb.Breadcrumb { Title = Application.Name, Url = Url.Page("/Applications/Details", new{ id=Application.Id }) }
+            };
         }
     }
 }

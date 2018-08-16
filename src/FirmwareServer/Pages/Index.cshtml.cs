@@ -2,6 +2,7 @@
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,24 +19,18 @@ namespace FirmwareServer.Pages
             _db = db;
         }
 
-        public List<EntityLayer.Models.Firmware> Firmware { get; private set; }
         public List<DeviceLogModel> DeviceLog { get; private set; }
 
         public void OnGet()
         {
-            Firmware = _db.Firmware
-                .OrderByDescending(x => x.Created)
-                .Take(10)
-                .ToList();
-
             DeviceLog = _db.DeviceLog
-                .GroupJoin(_db.Devices, l => l.DeviceId, d => d.Id, (l, d) => new { l, d })
-                .SelectMany(x => x.d.DefaultIfEmpty(), (x, d) => new DeviceLogModel
+                .Include(x => x.Device)
+                .Select(x => new DeviceLogModel
                 {
-                    Created = x.l.Created,
-                    Level = x.l.Level,
-                    Message = x.l.Message,
-                    Name = d.Name,
+                    Created = x.Created,
+                    Level = x.Level,
+                    Message = x.Message,
+                    Name = x.Device.Name,
                 })
                 .OrderByDescending(x => x.Created)
                 .Take(100)
@@ -45,6 +40,8 @@ namespace FirmwareServer.Pages
         public IActionResult OnGetDevices()
         {
             var devices = _db.Devices
+                .Include(x => x.DeviceType)
+                .Include(x => x.Application)
                 .OrderByDescending(x => x.LastOnline)
                 .Take(10)
                 .AsEnumerable()
@@ -52,6 +49,9 @@ namespace FirmwareServer.Pages
                 {
                     id = x.Id,
                     name = x.Name,
+                    chipType = x.ChipType.ToString(),
+                    deviceType = x.DeviceType?.Name ?? string.Empty,
+                    application = x.Application?.Name ?? string.Empty,
                     online = x.LastOnline.Humanize(),
                     details = Url.Page("./Devices/Details", new { id = x.Id }),
                 });
