@@ -4,6 +4,7 @@ using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
@@ -32,6 +33,12 @@ namespace FirmwareServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (Configuration.GetValue<bool>("FirmwareServer:IsRunningInContainer"))
+            {
+                services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(Configuration.GetValue<string>("FirmwareServer:AppData"), "keys")));
+            }
+
             services.AddSingleton(Configuration);
 
             services.Configure<FirmwareServerConfiguration>(Configuration.GetSection("FirmwareServer"));
