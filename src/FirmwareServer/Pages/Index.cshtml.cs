@@ -24,7 +24,6 @@ namespace FirmwareServer.Pages
         public void OnGet()
         {
             DeviceLog = _db.DeviceLog
-                .Include(x => x.Device)
                 .Select(x => new DeviceLogModel
                 {
                     Created = x.Created,
