@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace FirmwareServer
@@ -47,17 +45,6 @@ namespace FirmwareServer
 
             Console.WriteLine($"Data source={dataSource}");
             services.AddDbContext<Database>(options => options.UseSqlite($"Data source={dataSource}"));
-
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                options.AddSupportedCultures("nb", "nb-NO", "en-US");
-                options.AddSupportedUICultures("en-US");
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-                options.RequestCultureProviders = new List<IRequestCultureProvider>
-                {
-                    new AcceptLanguageHeaderRequestCultureProvider(),
-                };
-            });
 
             if (IsPasswordProtected)
             {
@@ -121,8 +108,6 @@ namespace FirmwareServer
                 WorkerCount = 1,
             });
             app.UseHangfireDashboard();
-
-            app.UseRequestLocalization();
 
             app.UseMvc();
 

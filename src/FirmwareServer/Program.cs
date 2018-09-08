@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -101,10 +102,15 @@ namespace FirmwareServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var runningInContainer = new ConfigurationBuilder()
+            var environmentVariables = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
-                .Build()
-                .GetValue("DOTNET_RUNNING_IN_CONTAINER", false);
+                .Build();
+
+            var runningInContainer = environmentVariables.GetValue("DOTNET_RUNNING_IN_CONTAINER", false);
+
+            var culture = environmentVariables.GetValue<string>("FirmwareServer:Culture");
+            CultureInfo.DefaultThreadCurrentCulture = string.IsNullOrEmpty(culture) ? CultureInfo.InvariantCulture : new CultureInfo(culture);
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
             var builder = WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>

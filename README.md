@@ -16,6 +16,8 @@ Serve firmware images to IOT devices
  
 **FIRMWARESERVER__PASSWORD** set to the password used to get access to the web gui. If not set, the gui is not password proteted.
 
+**FIRMWARESERVER__CULTURE** the culture to use in web gui (e.g. date format). If not set, invariant culture is used.
+
 ### Examples
 
 #### Start server listening on port 5000

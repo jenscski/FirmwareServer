@@ -8,4 +8,4 @@ docker stop fwsrv
 
 docker rm fwsrv
 
-docker run -d -p 127.0.0.1:5100:80 --name fwsrv --restart unless-stopped -v /home/jenscski/.fwsrv:/var/lib/fwsrv -e TZ=Europe/Oslo -e "FIRMWARESERVER__PASSWORD=123456" jenscski/fwsrv
+docker run -d -p 127.0.0.1:5100:80 --name fwsrv --restart unless-stopped -v /home/jenscski/.fwsrv:/var/lib/fwsrv -e TZ=Europe/Oslo -e "FIRMWARESERVER__PASSWORD=123456" -e "FIRMWARESERVER__CULTURE=nb" jenscski/fwsrv
