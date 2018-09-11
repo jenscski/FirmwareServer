@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1.401-sdk AS build
+FROM microsoft/dotnet:2.1.402-sdk AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -15,7 +15,7 @@ FROM build AS publish
 WORKDIR /app/src/FirmwareServer
 RUN dotnet publish -c Release -o out
 
-FROM microsoft/dotnet:2.1.3-aspnetcore-runtime AS runtime
+FROM microsoft/dotnet:2.1.4-aspnetcore-runtime AS runtime
 WORKDIR /app
 COPY --from=publish /app/src/FirmwareServer/out ./
 RUN mkdir /var/lib/fwsrv
