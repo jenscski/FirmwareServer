@@ -10,9 +10,12 @@
   - [ ] ESP8266
   - [ ] NGINX
 
-- [x] twitter-bootstrap@4.1.3
-
 # Change log
+
+## 0.1.3
+- [x] Updated to AspNetCore 2.2
+- [x] bootstrap@4.3.0
+- [x] Using local copy of @fortawesome/fontawesome-free@5.7.2
 
 ## 0.1.0
 First version
