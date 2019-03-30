@@ -13,7 +13,6 @@
 # Change log
 
 ## 0.1.3
-- [x] Updated to AspNetCore 2.2
 - [x] bootstrap@4.3.0
 - [x] Using local copy of @fortawesome/fontawesome-free@5.7.2
 - [x] Build docker using .NET Core 2.2.3
