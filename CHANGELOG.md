@@ -16,6 +16,7 @@
 - [x] bootstrap@4.3.1
 - [x] Using local copy of @fortawesome/fontawesome-free@5.8.1
 - [x] Build docker using .NET Core 2.2.3
+- [x] Wrong redirect after upload new firmware
 
 ## 0.1.0
 First version

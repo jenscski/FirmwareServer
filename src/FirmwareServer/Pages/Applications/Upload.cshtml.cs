@@ -95,7 +95,7 @@ namespace FirmwareServer.Pages.Applications
                 }
 
                 StatusMessage = "New firmware has been uploaded";
-                return RedirectToPage("./Details");
+                return RedirectToPage("./Details", new { id = firmware.ApplicationId });
             }
 
             return Page();

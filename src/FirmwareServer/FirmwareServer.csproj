@@ -2,6 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetLatestRuntimePatch>True</TargetLatestRuntimePatch>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <LangVersion>7.1</LangVersion>
+
     <VersionPrefix>0.1.3</VersionPrefix>
     <VersionSuffix>dev</VersionSuffix>
     <Product>Firmware server</Product>
