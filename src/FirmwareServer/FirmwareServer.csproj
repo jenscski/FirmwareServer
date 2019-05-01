@@ -24,12 +24,12 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.2" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.0" />
     <PackageReference Include="Humanizer" Version="2.6.2" />
     <PackageReference Include="Humanizer.Core" Version="2.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.172" />
   </ItemGroup>
 
