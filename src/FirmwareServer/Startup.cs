@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using System.Net;
 
 namespace FirmwareServer
 {
@@ -78,6 +79,12 @@ namespace FirmwareServer
             , IHostingEnvironment env
             , IServiceProvider serviceProvider)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                KnownNetworks = { new IPNetwork(IPAddress.Parse("172.17.0.1"), 16) },
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,11 +93,6 @@ namespace FirmwareServer
             {
                 app.UseExceptionHandler("/Error");
             }
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
 
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
