@@ -82,9 +82,9 @@ namespace FirmwareServer
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
                 ForwardLimit = null,
+                KnownProxies = { },
+                KnownNetworks = { },
             };
-            options.KnownProxies.Clear();
-            options.KnownNetworks.Clear();
 
             app.UseForwardedHeaders(options);
 
