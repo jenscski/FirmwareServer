@@ -78,11 +78,15 @@ namespace FirmwareServer
             , IHostingEnvironment env
             , IServiceProvider serviceProvider)
         {
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            var options = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
                 ForwardLimit = null,
-            });
+            };
+            options.KnownProxies.Clear();
+            options.KnownNetworks.Clear();
+
+            app.UseForwardedHeaders(options);
 
             if (env.IsDevelopment())
             {
