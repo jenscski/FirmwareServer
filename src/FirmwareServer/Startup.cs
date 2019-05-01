@@ -78,6 +78,12 @@ namespace FirmwareServer
             , IHostingEnvironment env
             , IServiceProvider serviceProvider)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                ForwardLimit = null,
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,11 +92,6 @@ namespace FirmwareServer
             {
                 app.UseExceptionHandler("/Error");
             }
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
 
             app.UseStatusCodePagesWithReExecute("/StatusCode/{0}");
 
