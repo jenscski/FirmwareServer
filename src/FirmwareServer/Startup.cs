@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using System.Net;
 
 namespace FirmwareServer
 {
@@ -81,9 +82,7 @@ namespace FirmwareServer
             var options = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-                ForwardLimit = null,
-                KnownProxies = { },
-                KnownNetworks = { },
+                KnownNetworks = { new IPNetwork(IPAddress.Parse("172.17.0.1"), 16) },
             };
 
             app.UseForwardedHeaders(options);
